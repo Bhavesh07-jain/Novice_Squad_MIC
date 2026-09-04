@@ -13,7 +13,7 @@ import requests
 # ---------------------------------------------------------------------------
 st.set_page_config(page_title="CSR Connect", layout="centered", page_icon="🤝")
 
-API = "https://novice-squad-mic.onrender.com/"
+API = "https://novice-squad-mic.onrender.com"
 
 DOMAINS = [
     "Education", "Health", "Rural Development", "Infrastructure",
@@ -314,11 +314,14 @@ def navigate(page: str):
 # ---------------------------------------------------------------------------
 def api_get(path, params=None):
     try:
-        r = requests.get(f"{API}{path}", params=params, timeout=10)
+        # Increased timeout to 60 to give Render's free tier enough time to wake up
+        r = requests.get(f"{API}{path}", params=params, timeout=60)
         r.raise_for_status()
         return r.json()
     except requests.exceptions.ConnectionError:
-        st.error("⚠ Cannot connect to backend. Make sure the FastAPI server is running on port 8000.")
+        st.error(
+            "⚠ Cannot connect to backend. The Render server might be spinning up from its sleep cycle. Please wait 1 minute and refresh."
+        )
         return None
     except Exception as e:
         st.error(f"API Error: {e}")
@@ -327,15 +330,19 @@ def api_get(path, params=None):
 
 def api_post(path, json_data=None):
     try:
-        r = requests.post(f"{API}{path}", json=json_data, timeout=10)
+        # Increased timeout to 60 to give Render's free tier enough time to wake up
+        r = requests.post(f"{API}{path}", json=json_data, timeout=60)
         r.raise_for_status()
         return r.json()
     except requests.exceptions.ConnectionError:
-        st.error("⚠ Cannot connect to backend. Make sure the FastAPI server is running on port 8000.")
+        st.error(
+            "⚠ Cannot connect to backend. The Render server might be spinning up from its sleep cycle. Please wait 1 minute and try again."
+        )
         return None
     except Exception as e:
         st.error(f"API Error: {e}")
         return None
+
 
 
 # ═══════════════════════════════════════════════════════════════════════════
