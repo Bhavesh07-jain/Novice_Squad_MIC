@@ -13,7 +13,7 @@ import requests
 # ---------------------------------------------------------------------------
 st.set_page_config(page_title="CSR Connect", layout="centered", page_icon="🤝")
 
-API = "http://localhost:8000"
+API = "https://novice-squad-mic.onrender.com/"
 
 DOMAINS = [
     "Education", "Health", "Rural Development", "Infrastructure",
